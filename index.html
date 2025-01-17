@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Bubbles App</title>
+	<style>
+		body {
+		font-family: Arial, sans-serif;
+		text-align: center;
+		}
+		canvas {
+		border: 2px solid black;
+		display: block;
+		margin: 20px auto;
+		}
+		button {
+		margin: 10px;
+		padding: 10px 20px;
+		font-size: 16px;
+		cursor: pointer;
+		}
+	</style>
+</head>
+<body>
+  <h1>Bubbles App</h1>
+  <canvas id="gameCanvas" width="600" height="300"></canvas>
+  <div>
+    <button id="hitButton">Hit</button>
+    <button id="resetButton">Reset</button>
+  </div>
+  <script>
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+
+    // Circle properties
+    const circle = {
+      x: 150, 
+      y: canvas.height / 2, 
+      radius: 50, 
+      color: "gold",
+    };
+
+    // Arrow properties
+    const arrow = {
+      x: canvas.width - 100, 
+      y: canvas.height / 2, 
+      width: 20, 
+      height: 10, 
+      color: "black", 
+      speed: 2, 
+      moving: false, 
+    };
+
+    // Draw circle
+    function drawCircle() {
+      ctx.beginPath();
+      ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2);
+      ctx.fillStyle = circle.color;
+      ctx.fill();
+      ctx.closePath();
+    }
+
+    // Draw arrow with 180-degree rotation
+    function drawArrow() {
+      ctx.save(); 
+      ctx.translate(arrow.x, arrow.y); 
+      ctx.rotate(Math.PI); 
+      ctx.beginPath();
+      ctx.moveTo(0, 0); 
+      ctx.lineTo(-arrow.width, -arrow.height);
+      ctx.lineTo(-arrow.width, arrow.height);
+      ctx.closePath();
+      ctx.fillStyle = arrow.color;
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // Main draw function
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height); 
+      drawCircle(); 
+      drawArrow(); 
+    }
+
+    
+    function checkCollision() {
+      const arrowTipX = arrow.x; 
+      const distance = Math.abs(arrowTipX - circle.x); 
+      return distance <= circle.radius; 
+    }
+
+    // Animate the arrow
+    function animateArrow() {
+      if (arrow.moving) {
+        arrow.x -= arrow.speed; 
+        if (checkCollision()) {
+          arrow.moving = false; 
+        }
+        draw(); 
+        if (arrow.moving) {
+          requestAnimationFrame(animateArrow);
+        }
+      }
+    }
+
+    // Reset the game
+    function reset() {
+      arrow.x = canvas.width - 100; 
+      arrow.moving = false; 
+      draw();
+    }
+
+    // Event listeners
+    document.getElementById("hitButton").addEventListener("click", () => {
+      if (!arrow.moving) {
+        arrow.moving = true;
+        animateArrow();
+      }
+    });
+
+    document.getElementById("resetButton").addEventListener("click", reset);
+
+	draw();
+  </script>
+</body>
+</html>
