@@ -4,7 +4,8 @@ A simple web-based game where the player can "hit" a circle with an arrow. The c
 
 ## Live Demo:
 
-You can try the app live here: [Bubbles App on GitHub Pages](https://harshith-km.github.io Canvas-JS-assignment)
+You can try the app live here: https://harshith-km.github.io Canvas-JS-assignment
+
 
 ## Features:
 
