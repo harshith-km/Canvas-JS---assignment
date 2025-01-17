@@ -84,10 +84,14 @@
     }
 
     
-    function checkCollision() {
+	function checkCollision() {
       const arrowTipX = arrow.x; 
       const distance = Math.abs(arrowTipX - circle.x); 
-      return distance <= circle.radius; 
+      if (distance <= circle.radius) {
+        circle.color = "red"; // Change circle color to red on hit
+        return true; // Collision detected
+      }
+      return false; 
     }
 
     // Animate the arrow
@@ -108,6 +112,7 @@
     function reset() {
       arrow.x = canvas.width - 100; 
       arrow.moving = false; 
+	  circle.color = "gold";
       draw();
     }
 
